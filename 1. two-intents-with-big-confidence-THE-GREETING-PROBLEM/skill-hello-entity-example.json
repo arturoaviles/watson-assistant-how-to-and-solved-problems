@@ -1,0 +1,403 @@
+{
+  "name": "hello-entity-example",
+  "intents": [
+    {
+      "intent": "comprar",
+      "examples": [
+        {
+          "text": "quiero comprar una moto"
+        },
+        {
+          "text": "quiero obtener una mesa"
+        },
+        {
+          "text": "quiero hacerme de un celular"
+        },
+        {
+          "text": "quiero adquirir"
+        },
+        {
+          "text": "quiero comprar"
+        },
+        {
+          "text": "quiero adquirir un avión"
+        },
+        {
+          "text": "quiero comprar un auto"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "cancelar",
+      "examples": [
+        {
+          "text": "quiero cancelar la compra"
+        },
+        {
+          "text": "quiero cancelar mi compra"
+        },
+        {
+          "text": "quiero hacer una cancelación"
+        },
+        {
+          "text": "quiero realizar una cancelación"
+        }
+      ],
+      "description": ""
+    },
+    {
+      "intent": "small_talk_que_sabes_hacer",
+      "examples": [
+        {
+          "text": "en que me podrías ayudar?"
+        },
+        {
+          "text": "que puedes hacer?"
+        },
+        {
+          "text": "en que me puedes ayudar?"
+        },
+        {
+          "text": "en que podrias ayudarme?"
+        },
+        {
+          "text": "que puedes hacer por mi?"
+        },
+        {
+          "text": "en que puedes ayudarme?"
+        }
+      ],
+      "description": ""
+    }
+  ],
+  "entities": [
+    {
+      "entity": "special_small_talk",
+      "values": [
+        {
+          "type": "synonyms",
+          "value": "saludo",
+          "synonyms": [
+            "hola",
+            "buenos dias",
+            "buenas tardes",
+            "buen día",
+            "buenas noches",
+            "buen dia",
+            "hello",
+            "hi",
+            "hey",
+            "ola"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "despedida",
+          "synonyms": [
+            "adios",
+            "hasta luego",
+            "hasta pronto",
+            "bye",
+            "goodbye",
+            "adiós",
+            "hasta la vista",
+            "good bye",
+            "a dios",
+            "bye bye"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "pregunta",
+          "synonyms": [
+            "preguntas",
+            "preguntar",
+            "duda",
+            "dudas",
+            "ayuda",
+            "ayudar",
+            "ayudarme",
+            "ayudame",
+            "ayúdame"
+          ]
+        },
+        {
+          "type": "synonyms",
+          "value": "como estas",
+          "synonyms": [
+            "¿cómo estas?",
+            "¿cómo te sientes?",
+            "como estas?",
+            "cómo estas?",
+            "cómo estás?",
+            "como te encuentras?",
+            "como te encuentras hoy",
+            "como te sientes hoy?",
+            "como estas hoy",
+            "como te sientes hoy"
+          ]
+        }
+      ],
+      "fuzzy_match": true
+    }
+  ],
+  "language": "es",
+  "metadata": {
+    "api_version": {
+      "major_version": "v1",
+      "minor_version": "2018-09-20"
+    }
+  },
+  "description": "",
+  "dialog_nodes": [
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hasta luego"
+              },
+              {
+                "text": "Hasta pronto!"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1545258803250",
+      "metadata": {},
+      "conditions": "@special_small_talk:despedida && input.text.length() < 20",
+      "dialog_node": "node_3_1545250238907",
+      "previous_sibling": "node_2_1545250227257"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hola, ¿en qué te puedo ayudar?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1545258803250",
+      "metadata": {},
+      "conditions": "@special_small_talk:saludo && input.text.length() < 20",
+      "dialog_node": "node_2_1545250227257",
+      "previous_sibling": "node_7_1545258892305"
+    },
+    {
+      "type": "standard",
+      "title": "Jump to Anything Else",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1545258803250",
+      "metadata": {},
+      "next_step": {
+        "behavior": "jump_to",
+        "selector": "body",
+        "dialog_node": "En otras cosas"
+      },
+      "conditions": "anything_else",
+      "dialog_node": "node_6_1545258863054",
+      "previous_sibling": "node_3_1545250238907"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Me encuentro muy feliz, ¿cómo te puedo ayudar?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1545258803250",
+      "metadata": {},
+      "conditions": "@special_small_talk:(como estas) && input.text.length() < 20",
+      "dialog_node": "node_7_1545258892305",
+      "previous_sibling": "node_4_1545250297243"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "¿Cuál es tu duda?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "parent": "node_5_1545258803250",
+      "metadata": {},
+      "conditions": "@special_small_talk:pregunta && input.text.length() < 20",
+      "dialog_node": "node_4_1545250297243"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Quieres COMPRAR! :)"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "#comprar && intents.confidence > $confidence",
+      "dialog_node": "node_1_1545250220186",
+      "previous_sibling": "Bienvenido"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Cancelación Realizada!"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "#cancelar && intents.confidence > $confidence",
+      "dialog_node": "node_9_1545259524868",
+      "previous_sibling": "node_1_1545250220186"
+    },
+    {
+      "type": "standard",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Te puedo ayudar a comprar y cancelaciones. Por el momento no puedo ayudarte a buscar productos"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "#small_talk_que_sabes_hacer && intents.confidence > $confidence",
+      "dialog_node": "node_8_1545259149839",
+      "previous_sibling": "node_9_1545259524868"
+    },
+    {
+      "type": "standard",
+      "title": "Special Small Talk",
+      "output": {
+        "generic": [
+          {
+            "values": [],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "next_step": {
+        "behavior": "skip_user_input"
+      },
+      "conditions": "true",
+      "dialog_node": "node_5_1545258803250",
+      "previous_sibling": "node_8_1545259149839"
+    },
+    {
+      "type": "standard",
+      "title": "En otras cosas",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "No le he entendido. Intente reformular la consulta."
+              },
+              {
+                "text": "¿Puede expresarse con otras palabras? No le he entendido."
+              },
+              {
+                "text": "No entendí el significado."
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "metadata": {},
+      "conditions": "anything_else",
+      "dialog_node": "En otras cosas",
+      "previous_sibling": "node_5_1545258803250"
+    },
+    {
+      "type": "standard",
+      "title": "Bienvenido",
+      "output": {
+        "generic": [
+          {
+            "values": [
+              {
+                "text": "Hola. ¿Cómo puedo ayudarle?"
+              }
+            ],
+            "response_type": "text",
+            "selection_policy": "sequential"
+          }
+        ]
+      },
+      "context": {
+        "confidence": 0.8
+      },
+      "metadata": {},
+      "conditions": "welcome",
+      "dialog_node": "Bienvenido"
+    }
+  ],
+  "workspace_id": "e6a44a5d-d14e-4bac-bd3a-a5182b908e33",
+  "counterexamples": [],
+  "system_settings": {
+    "tooling": {
+      "store_generic_responses": true
+    }
+  },
+  "learning_opt_out": false,
+  "status": "Available"
+}
